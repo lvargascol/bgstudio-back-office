@@ -13,7 +13,7 @@ import ViewService from '@components/ViewService';
 
 const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
 
-export default function Team() {
+export default function Services() {
 
   const [services, setServices] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);

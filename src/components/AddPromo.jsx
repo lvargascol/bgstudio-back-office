@@ -38,8 +38,6 @@ export default function FormProduct({ setOpen, setAlert }) {
       minutes: selected.reduce((acum, current) => acum + current.minutes, 0),
     };
 
-    console.log(data);
-
     createPromo(data)
       .then((response) => {
         setAlert({
