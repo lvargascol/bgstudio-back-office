@@ -1,42 +1,60 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Fragment } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useAuth } from '@hooks/useAuth';
+import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
-const navigation = [
-  { name: 'Bookings', href: '/bookings', current: true },
-  { name: 'Team', href: '/team', current: false },
-  { name: 'Services', href: '/services', current: false },
-  { name: 'Promos', href: '/promos', current: false },
-  { name: 'Categories', href: '/categories', current: false },
-  { name: 'Customers', href: '/customers', current: false },
-]
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '/' },
-]
+
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function Example() {  
+  const auth = useAuth();
+  const router = useRouter();
+  
+  auth.fetchUser();
+
+  const navigation = auth.user ? 
+  [
+    // { name: 'Bookings', href: '/bookings', current: (router.asPath === '/bookings') ? true : false },
+    { name: 'Team', href: '/team', current: (router.asPath === '/team') ? true : false },
+    { name: 'Services', href: '/services', current: (router.asPath === '/services') ? true : false },
+    { name: 'Promos', href: '/promos', current: (router.asPath === '/promos') ? true : false },
+    { name: 'Categories', href: '/categories', current: (router.asPath === '/categories') ? true : false },
+    // { name: 'Customers', href: '/customers', current: (router.asPath === '/customers') ? true : false },
+  ]
+  :
+  []
+
+  const userNavigation = auth.user ?
+  [
+    { name: 'Your Profile', callback: () => router.push('/team') },
+    { name: 'Sign out', callback: () => auth.logout() },
+  ]
+  :
+  [
+    { name: 'Sign in', callback: () => router.push('/login') },
+    // { name: 'Sign out', callback: () => auth.logout() },
+  ]
+
+  const user = (auth.role === 'specialist') ?
+  {
+    name: auth?.user?.specialist.name,
+    email: auth?.user?.email,
+    imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.specialist.name}`,
+  } :
+  {
+    name: auth?.user?.role,
+    email: auth?.user?.email,
+    imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.role}`,
+  }
+
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
@@ -53,8 +71,8 @@ export default function Example() {
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <a
+                        {navigation?.map((item) => (
+                          <Link
                             key={item.name}
                             href={item.href}
                             className={classNames(
@@ -66,7 +84,7 @@ export default function Example() {
                             aria-current={item.current ? 'page' : undefined}
                           >
                             {item.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -86,7 +104,7 @@ export default function Example() {
                         <div>
                           <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                            <img className="h-8 w-8 rounded-full" src={user?.imageUrl} alt="" />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -102,15 +120,15 @@ export default function Example() {
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
-                                  <a
-                                    href={item.href}
+                                  <button
+                                    onClick={() => item.callback()}
                                     className={classNames(
                                       active ? 'bg-gray-100' : '',
                                       'block px-4 py-2 text-sm text-gray-700'
                                     )}
                                   >
                                     {item.name}
-                                  </a>
+                                  </button>
                                 )}
                               </Menu.Item>
                             ))}
@@ -138,7 +156,7 @@ export default function Example() {
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
-                      as="a"
+                      as="Link"
                       href={item.href}
                       className={classNames(
                         item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
@@ -146,6 +164,7 @@ export default function Example() {
                       )}
                       aria-current={item.current ? 'page' : undefined}
                     >
+                      
                       {item.name}
                     </Disclosure.Button>
                   ))}

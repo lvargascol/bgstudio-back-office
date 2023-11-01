@@ -4,8 +4,6 @@ import endPoints from "@services/api";
 export default function CategoryDetails({ setOpen, alert, setAlert, id }) {
 
   const category = useFetch(endPoints.categories.getOneCategory(id));
-  console.log(category);
-
 
   return (
     <div className='w-full'>
@@ -18,6 +16,9 @@ export default function CategoryDetails({ setOpen, alert, setAlert, id }) {
 
               {category?.services?.map((service) => (
                 <div className='flex flex-raw items-center gap-x-2 '>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 py-0.5 text-gray-500">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                  </svg>
                   <p className="text-sm leading-5 text-gray-900 py-1.5 pl-1"> {service.name}</p>
                 </div>
               ))}

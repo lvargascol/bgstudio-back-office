@@ -36,6 +36,7 @@ export default function FormProduct({ setOpen, setAlert }) {
       description: formData.get('description'),
       price: parseInt(formData.get('price')),
       minutes: selected.reduce((acum, current) => acum + current.minutes, 0),
+      image: formData.get('image'),
     };
 
     createPromo(data)
@@ -157,20 +158,20 @@ export default function FormProduct({ setOpen, setAlert }) {
 
 
 
-            {/* <div className="col-span-2 sm:col-span-4">
-              <label htmlFor="minutes" className="block text-xs font-medium text-gray-700">
-                Duración (min)
+            <div className="col-span-6 sm:col-span-8">
+              <label htmlFor="image" className="block text-xs font-medium text-gray-700">
+                Imagen (URL)
               </label>
               <input
-                type="number"
-                name="minutes"
-                id="minutes"
+                type="url"
+                name="image"
+                id="image"
+                placeholder="https://example.com/image.jpg"
                 required="required"
-                min="5"
-                step="5"
+                pattern="https://.*"
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
-            </div> */}
+            </div>
 
 
 

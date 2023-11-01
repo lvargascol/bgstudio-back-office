@@ -1,7 +1,9 @@
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Disclosure } from '@headlessui/react'
 import axios from 'axios';
+import { useAuth } from '@hooks/useAuth';
 import useAlert from '@hooks/useAlert';
 import endPoints from "@services/api";
 import Modal from '@common/Modal';
@@ -15,6 +17,11 @@ const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
 
 export default function Team() {
 
+  const auth = useAuth();
+  const router = useRouter();
+
+
+
   const [specialists, setSpecialists] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
@@ -24,6 +31,7 @@ export default function Team() {
   const { alert, setAlert, toggleAlert } = useAlert();
 
   useEffect(() => {
+    auth.user ? [] : router.push('/login');
     async function loadSpecialists() {
       const response = await axios.get(endPoints.specialists.getAllSpecialist);
       setSpecialists(response.data);

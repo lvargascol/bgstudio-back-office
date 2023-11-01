@@ -17,9 +17,8 @@ const createCategory = async (body) => {
 //   return response.data;
 // };
 
-
 const deleteCategory = async (id) => {
-    const response = await axios.delete(endPoints.promos.deleteCategory(id));
+    const response = await axios.delete(endPoints.categories.deleteCategory(id));
     return response.data;
 };
 
@@ -30,7 +29,7 @@ const updateCategory = async (id, body) => {
             'Content-Type': 'application/json',
         },
     };
-    const response = await axios.patch(endPoints.promos.updateCategory(id), body, config);
+    const response = await axios.patch(endPoints.categories.updateCategory(id), body, config);
     return response.data;
 };
 

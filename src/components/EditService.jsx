@@ -181,7 +181,7 @@ export default function FormProduct({ setOpen, setAlert, id }) {
               />
             </div>
 
-            <div className="col-span-6 sm:col-span-6">
+            <div className="col-span-6 sm:col-span-5">
               <label htmlFor="image" className="block text-xs font-medium text-gray-700">
                 Imagen
               </label>
@@ -195,24 +195,8 @@ export default function FormProduct({ setOpen, setAlert, id }) {
               />
             </div>
 
-            <div className="col-span-6 sm:col-span-6">
-              <label htmlFor="description" className="block text-xs font-medium text-gray-700">
-                Descripción
-              </label>
-              <textarea
-                defaultValue={service?.description}
-                name="description"
-                id="description"
-                required="required"
-                className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
-                rows="3"
-              ></textarea>
-            </div>
 
-
-
-
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-1">
               <label htmlFor="startedAt" className="block text-xs font-medium text-gray-700">
                 Status
               </label>
@@ -232,6 +216,28 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                 </Switch>
               </div>
             </div>
+
+
+
+
+            <div className="col-span-6 sm:col-span-6">
+              <label htmlFor="description" className="block text-xs font-medium text-gray-700">
+                Descripción
+              </label>
+              <textarea
+                defaultValue={service?.description}
+                name="description"
+                id="description"
+                required="required"
+                className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
+                rows="3"
+              ></textarea>
+            </div>
+
+
+
+
+
           </div>
         </div>
 

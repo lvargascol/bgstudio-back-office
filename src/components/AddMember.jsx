@@ -1,10 +1,42 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
+import useFetch from '@hooks/useFetch';
 import { useRouter } from 'next/router';
-import { createSpecialist } from '@services/api/specialists'
+import { createSpecialist, addService } from '@services/api/specialists'
+import endPoints from '@services/api';
 
 export default function FormProduct({ setOpen, setAlert }) {
   const formRef = useRef(null);
   const router = useRouter();
+
+  const categories = useFetch(endPoints.categories.getAllCategory);
+  const services = useFetch(endPoints.services.getAllService);
+
+  const [selected, setSelected] = useState([]);
+
+
+  const handleSelect = () => {
+    const selectedId = parseInt(new FormData(formRef.current).get('category'));
+    const found = selected.find((item) => (item.id === selectedId)
+    );
+    if (!found) {
+      categories.map((category) => (category.id === selectedId) ? setSelected([...selected, category]) : selectedId
+      );
+    }
+
+    selected.forEach((category) => {
+      category.services.forEach((service) => {
+        console.log(service);
+      });
+    });
+
+  };
+
+  const handleRemove = (category) => {
+    setSelected(selected.filter((item) => (item.id != category.id)));
+  };
+
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(formRef.current);
@@ -23,15 +55,26 @@ export default function FormProduct({ setOpen, setAlert }) {
       }
     };
 
-
     createSpecialist(data)
-      .then(() => {
+      .then((response) => {
         setAlert({
           active: true,
           message: 'Especialista creado correctamente',
           type: 'success',
           autoClose: false,
         });
+        selected.forEach((category) => {
+          category.services.forEach((service) => {
+            const toAddService = {
+              specialistId: response.id,
+              serviceId: service.id,
+            };
+            console.log(toAddService);
+            addService(toAddService);
+          });
+
+        });
+
         setOpen(false);
       })
       .catch((err) => {
@@ -49,9 +92,9 @@ export default function FormProduct({ setOpen, setAlert }) {
       <div className="overflow-hidden">
       <p className="text-sm pb-2 font-bold text-gray-900">Añadir miembro</p>
         <div className="px-4 py-1 bg-white sm:p-6 sm:pt-1">
-          <div className="grid grid-cols-6 gap-2">
+          <div className="grid grid-cols-6 sm:grid-cols-6 gap-2">
 
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-2">
               <label htmlFor="firstName" className="block text-xs font-medium text-gray-700">
                 Nombres
               </label>
@@ -67,7 +110,7 @@ export default function FormProduct({ setOpen, setAlert }) {
               />
             </div>
 
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-2">
               <label htmlFor="lastName" className="block text-xs font-medium text-gray-700">
                 Apellidos
               </label>
@@ -83,7 +126,7 @@ export default function FormProduct({ setOpen, setAlert }) {
               />
             </div>
 
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-2">
               <label htmlFor="birthday" className="block text-xs font-medium text-gray-700">
                 Fecha de Nacimiento
               </label>
@@ -131,7 +174,7 @@ export default function FormProduct({ setOpen, setAlert }) {
               />
             </div>
 
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-4">
               <label htmlFor="position" className="block text-xs font-medium text-gray-700">
                 Cargo / Ocupación
               </label>
@@ -147,7 +190,7 @@ export default function FormProduct({ setOpen, setAlert }) {
               />
             </div>
 
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-2">
               <label htmlFor="startedAt" className="block text-xs font-medium text-gray-700">
                 Inicio de Actividades
               </label>
@@ -160,6 +203,76 @@ export default function FormProduct({ setOpen, setAlert }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
+
+
+
+            <div className="col-span-6 sm:col-span-6">
+              <label htmlFor="category" className="block text-xs font-medium text-gray-700">
+                Categoría de servicios
+              </label>
+              <select
+                name="category"
+                id="category"
+                onChange={handleSelect}
+                className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
+              >
+                <option value="" disabled selected className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap">Selecione los servicios</option>
+                {/* {categories?.map((category) => (
+                  <optgroup
+                    key={category.id}
+                    value={category.id}
+                    disabled={category.unavailable}
+                    label={category.name}
+                    className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"
+                  >
+                    {category?.services.map((service) => (
+                      <option
+                        key={service.id}
+                        value={service.id}
+                        disabled={service.unavailable}
+                        className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"
+                      >
+                        {service.name}
+
+                      </option>))}
+
+                  </optgroup>
+                  ))} */}
+
+
+                {categories?.map((category) => (
+                  <option
+                    key={category.id}
+                    value={category.id}
+                    disabled={category.unavailable}
+                    label={category.name}
+                    className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"
+                  >
+                  </option>
+                ))}
+
+
+
+              </select>
+
+              {selected.length != 0 && (<ul className='inline-flex items-center justify-center gap-x-2 gap-y-1 mt-1 flex-wrap'>
+                {selected.map((item, index) => (
+                  <li
+                    key={item.id}
+                    className='inline-flex justify-center py-1 px-2 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-gray-500'
+                  ><p className="text-xs mt-0 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md">{item.name}</p><button
+                    type="button"
+                    onClick={() => handleRemove(item)}
+                  >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 pl-1 text-white">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button></li>))}
+              </ul>)}
+            </div>
+
+
+            
 
           </div>
         </div>

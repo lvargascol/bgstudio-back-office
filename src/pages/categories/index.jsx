@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Disclosure } from '@headlessui/react'
 import axios from 'axios';
 import useAlert from '@hooks/useAlert';
@@ -7,11 +8,13 @@ import endPoints from "@services/api";
 import Modal from '@common/Modal';
 import Alert from '@common/Alert';
 import AddCategory from '@components/AddCategory';
-import EditService from '@components/EditService'; //
-import ViewCategory from '@components/ViewCategory'; //
+import EditCategory from '@components/EditCategory';
+import ViewCategory from '@components/ViewCategory';
 
 
 export default function Categories() {
+
+    const router = useRouter();
 
     const [services, setServices] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -24,14 +27,16 @@ export default function Categories() {
 
     useEffect(() => {
         async function loadCategories() {
-            const response = await axios.get(endPoints.categories.getAllCategory);
-            setCategories(response.data);
+            try {
+                const response = await axios.get(endPoints.categories.getAllCategory);
+                setCategories(response.data);
+
+            } catch (error) {
+                router.push('/login')                
+            }
         }
-        try {
-            loadCategories();
-        } catch (error) {
-            console.log(error)
-        }
+
+        loadCategories();
     }, [alert])
 
     const handleEdit = (id) => {
@@ -137,7 +142,7 @@ export default function Categories() {
             </li>
 
             <Modal open={openEdit} setOpen={setOpenEdit}>
-                <EditService setOpen={setOpenEdit} setAlert={setAlert} id={id} />
+                <EditCategory setOpen={setOpenEdit} setAlert={setAlert} id={id} />
             </Modal>
             <Modal open={openView} setOpen={setOpenView}>
                 <ViewCategory setOpen={setOpenView} setAlert={setAlert} id={id} />

@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { Switch } from '@headlessui/react'
+import useFetch from '@hooks/useFetch';
 import axios from 'axios';
-import { updateSpecialist, deleteSpecialist } from '@services/api/specialists'
+import { updateSpecialist, deleteSpecialist, addService, removeService } from '@services/api/specialists'
 import endPoints from "@services/api";
 
 export default function FormProduct({ setOpen, setAlert, id }) {
@@ -10,15 +11,21 @@ export default function FormProduct({ setOpen, setAlert, id }) {
   const router = useRouter();
 
   const [specialist, setSpecialist] = useState([]);
-  const [enabled, setEnabled] = useState(true)
-  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [enabled, setEnabled] = useState(true);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [selected, setSelected] = useState([]);
+
 
   const deleteMessage = `Esta acción es irreversible ¿Estás seguro de eliminar este miembro? De ser así, escriba "${specialist?.firstName} ${specialist?.lastName}" para confirmar`;
+
+  const categories = useFetch(endPoints.categories.getAllCategory);
+  const services = useFetch(endPoints.services.getAllService);
 
   useEffect(() => {
     async function loadSpecialist() {
       const response = await axios.get(endPoints.specialists.getOneSpecialist(id));
       setSpecialist(response.data);
+      setSelected(response.data.services);
       setEnabled(response.data.active);
     }
     try {
@@ -26,7 +33,21 @@ export default function FormProduct({ setOpen, setAlert, id }) {
     } catch (error) {
       console.log(error)
     }
-  }, [alert])
+  }, [alert]);
+
+  const handleSelect = () => {
+    const selectedId = parseInt(new FormData(formRef.current).get('service'));
+    const found = selected.find((item) => (item.id === selectedId)
+    );
+    if (!found) {
+      services.map((service) => (service.id === selectedId) ? setSelected([...selected, service]) : selectedId
+      );
+    };
+  };
+
+  const handleRemove = (service) => {
+    setSelected(selected.filter((item) => (item.id != service.id)));
+  };
 
   const handleEnable = () => {
     setEnabled(!enabled);
@@ -34,6 +55,13 @@ export default function FormProduct({ setOpen, setAlert, id }) {
 
   const toggleConfirmDelete = () => {
     setConfirmDelete(!confirmDelete);
+  };
+
+  const subtractArray = (array1, array2) => {
+    array1.forEach((item1) => {
+      array2 = array2.filter((item2) => item2.id != item1.id);
+    });
+    return array2;
   };
 
   const handleSubmit = (event) => {
@@ -78,6 +106,18 @@ export default function FormProduct({ setOpen, setAlert, id }) {
             type: 'success',
             autoClose: false,
           });
+          const toAddServices = subtractArray(specialist.services, selected).map((item) => item.id);
+          toAddServices.map((toAddService) => {
+            addService({
+              specialistId: id,
+              serviceId: toAddService,
+            });
+          });
+
+          const toRemoveServices = subtractArray(selected, specialist.services);
+          toRemoveServices.map((toRemoveService) => {
+            removeService(toRemoveService.SpecialistService.id);
+          });
           setOpen(false);
         })
         .catch((err) => {
@@ -96,8 +136,9 @@ export default function FormProduct({ setOpen, setAlert, id }) {
       <div className="overflow-hidden">
         <p className="text-sm pb-2 font-bold text-gray-900">Editar miembro</p>
         <div className="px-4 py-1 bg-white sm:p-6 sm:pt-1">
-          <div className="grid grid-cols-6 gap-2">
-            <div className="col-span-6 sm:col-span-3">
+          <div className="grid grid-cols-6 sm:grid-cols-6 gap-2">
+
+            <div className="col-span-6 sm:col-span-2">
               <label htmlFor="firstName" className="block text-xs font-medium text-gray-700">
                 Nombres
               </label>
@@ -112,7 +153,7 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-2">
               <label htmlFor="lastName" className="block text-xs font-medium text-gray-700">
                 Apellidos
               </label>
@@ -127,7 +168,7 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-2">
               <label htmlFor="birthday" className="block text-xs font-medium text-gray-700">
                 Fecha de Nacimiento
               </label>
@@ -172,7 +213,7 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-4">
               <label htmlFor="position" className="block text-xs font-medium text-gray-700">
                 Cargo / Ocupación
               </label>
@@ -187,7 +228,7 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-            <div className="col-span-6 sm:col-span-3">
+            <div className="col-span-6 sm:col-span-2">
               <label htmlFor="startedAt" className="block text-xs font-medium text-gray-700">
                 Inicio de Actividades
               </label>
@@ -200,7 +241,60 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-            <div className="col-span-6 sm:col-span-3">
+
+
+            <div className="col-span-5 sm:col-span-5">
+              <label htmlFor="service" className="block text-xs font-medium text-gray-700">
+                Servicios
+              </label>
+              <select
+                name="service"
+                id="service"
+                onChange={handleSelect}
+                className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
+              >
+                <option value="" disabled selected className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap">Selecione los servicios</option>
+                {categories?.map((category) => (
+                  <optgroup
+                    key={category.id}
+                    value={category.id}
+                    disabled={category.unavailable}
+                    label={category.name}
+                    className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"
+                  >
+                    {category?.services.map((service) => (
+                      <option
+                        key={service.id}
+                        value={service.id}
+                        disabled={service.unavailable}
+                        className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"
+                      >
+                        {service.name}
+
+                      </option>))}
+
+                  </optgroup>))}
+              </select>
+
+              {selected.length != 0 && (<ul className='inline-flex items-center justify-center gap-x-2 gap-y-1 mt-1 flex-wrap'>
+                {selected.map((item) => (
+                  <li
+                    key={item.id}
+                    className='inline-flex justify-center py-1 px-2 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-gray-500'
+                  ><p className="text-xs mt-0 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md">{item.name}</p><button
+                    type="button"
+                    onClick={() => handleRemove(item)}
+                  >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 pl-1 text-white">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button></li>))}
+              </ul>)}
+            </div>
+
+
+
+            <div className="col-span-1 sm:col-span-1">
               <label htmlFor="startedAt" className="block text-xs font-medium text-gray-700">
                 Status
               </label>

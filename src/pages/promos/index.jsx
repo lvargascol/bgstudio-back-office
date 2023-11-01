@@ -6,9 +6,9 @@ import useAlert from '@hooks/useAlert';
 import endPoints from "@services/api";
 import Modal from '@common/Modal';
 import Alert from '@common/Alert';
-import AddPromo from '@components/AddPromo'; //
-import EditPromo from '@components/EditPromo'; //
-import ViewPromo from '@components/ViewPromo'; //
+import AddPromo from '@components/AddPromo';
+import EditPromo from '@components/EditPromo';
+import ViewPromo from '@components/ViewPromo';
 
 
 export default function Promos() {
@@ -57,6 +57,7 @@ export default function Promos() {
                 <div className="flex gap-x-4">
                   <div className="min-w-0 flex-auto">
                     <p className="text-sm font-semibold leading-5 text-gray-900 py-0.5">{promo.name}</p>
+
                   </div>
                   {promo.active ? (
                     <div className="flex items-center gap-x-1.5">
@@ -73,7 +74,9 @@ export default function Promos() {
 
                     </div>
                   )}
+                  
                 </div>
+                
 
 
                 <div className="flex flex-col items-end">
@@ -111,7 +114,11 @@ export default function Promos() {
               <div className="flex justify-between">
                 <div className="flex gap-x-4">
                   <div className="min-w-0 flex-auto">
-                    <p className="mt-1 truncate text-xs leading-3 text-gray-500">$ {promo.price}</p>
+                  {/* <p className="mt-1 truncate text-xs leading-3 text-gray-500">   $ {promo.price}</p> */}
+                    <p className="mt-1 truncate text-xs leading-3 text-gray-500"> {promo.services?.map((service) => (
+                      `- ${service.name} `
+                    ))}</p>
+          
                   </div>
                 </div>
 

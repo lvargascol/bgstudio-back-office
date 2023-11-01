@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Switch } from '@headlessui/react';
 import useFetch from '@hooks/useFetch';
 import axios from 'axios';
-import { updatePromo, deletePromo , addService } from '@services/api/promos'
+import { updatePromo, deletePromo, addService, removeService } from '@services/api/promos'
 import endPoints from "@services/api";
 
 export default function FormProduct({ setOpen, setAlert, id }) {
@@ -59,11 +59,11 @@ export default function FormProduct({ setOpen, setAlert, id }) {
         setConfirmDelete(!confirmDelete);
     };
 
-    const handleAddRemoveArray = (array1, array2) => {
+    const subtractArray = (array1, array2) => {
         array1.forEach((item1) => {
-            array2 = array2.filter((item2) => item2 != item1);
+            array2 = array2.filter((item2) => item2.id != item1.id);
         });
-        return array2.map((item) => item.id);
+        return array2;
     };
 
     const handleSubmit = (event) => {
@@ -75,22 +75,8 @@ export default function FormProduct({ setOpen, setAlert, id }) {
             description: formData.get('description'),
             price: parseInt(formData.get('price')),
             minutes: selected.reduce((acum, current) => acum + current.minutes, 0),
-          };
-
-        //   const toAddPromos = handleAddRemoveArray(promo.services, selected).map((toAddPromo) => toAddPromo.id)
-
-        //   const toRemovePromos = subtractArray(selected, promo.services).map((toRemovePromo) => toRemovePromo.id)
-
-
-          console.log(promo.services);
-          console.log(selected);
-          console.log("add: ");
-          console.log(handleAddRemoveArray(promo.services, selected));
-          console.log("remove: ");
-          console.log(handleAddRemoveArray(selected, promo.services));
-
-
-
+            active: enabled,
+        };
 
         if (confirmDelete) {
             deletePromo(promo.id)
@@ -101,14 +87,7 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                         type: 'success',
                         autoClose: false,
                     });
-                    
-                    // selected.map((item) => {
-                    //   const toAddService = {
-                    //     promoId: response.id,
-                    //     serviceId: item.id,
-                    //   };
-                    //   addService(toAddService);
-                    // });
+
                     setOpen(false);
                 })
                 .catch((err) => {
@@ -128,14 +107,19 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                         type: 'success',
                         autoClose: false,
                     });
-                    const toAddServices = handleAddRemoveArray(promo.services, selected);
+                    const toAddServices = subtractArray(promo.services, selected).map((item) => item.id);
                     toAddServices.map((toAddService) => {
-                      addService({
+                        addService({
                             promoId: id,
                             serviceId: toAddService,
-                          });
-
+                        });
                     });
+
+                    const toRemoveServices = subtractArray(selected, promo.services);
+                    toRemoveServices.map((toRemoveService) => {
+                        removeService(toRemoveService.PromoService.id);
+                    });
+
                     setOpen(false);
                 })
                 .catch((err) => {
@@ -211,38 +195,8 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                                 /></div>
                         </div>
 
-                        {/* <div className="col-span-2 sm:col-span-3">
-                            <label htmlFor="minutes" className="block text-xs font-medium text-gray-700">
-                                Duración (min)
-                            </label>
-                            <input
-                                defaultValue={promo?.minutes}
-                                type="number"
-                                name="minutes"
-                                id="minutes"
-                                required="required"
-                                min="5"
-                                step="5"
-                                className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
-                            />
-                        </div> */}
 
-                        {/* <div className="col-span-6 sm:col-span-6">
-                            <label htmlFor="image" className="block text-xs font-medium text-gray-700">
-                                Imagen
-                            </label>
-                            <input
-                                defaultValue={promo?.image}
-                                type="text"
-                                name="image"
-                                id="image"
-                                required="required"
-                                className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
-                            />
-                        </div> */}
-
-
-                        <div className="col-span-6 sm:col-span-8">
+                        <div className="col-span-5 sm:col-span-7">
                             <label htmlFor="service" className="block text-xs font-medium text-gray-700">
                                 Servicios
                             </label>
@@ -276,7 +230,7 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                             </select>
 
                             {selected.length != 0 && (<ul className='inline-flex items-center justify-center gap-x-2 gap-y-1 mt-1 flex-wrap'>
-                                {selected.map((item, index) => (
+                                {selected.map((item) => (
                                     <li
                                         key={item.id}
                                         className='inline-flex justify-center py-1 px-2 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-gray-500'
@@ -291,40 +245,7 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                             </ul>)}
                         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        <div className="col-span-6 sm:col-span-8">
-                            <label htmlFor="description" className="block text-xs font-medium text-gray-700">
-                                Descripción
-                            </label>
-                            <textarea
-                                defaultValue={promo?.description}
-                                name="description"
-                                id="description"
-                                required="required"
-                                className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
-                                rows="3"
-                            ></textarea>
-                        </div>
-
-
-
-
-                        <div className="col-span-6 sm:col-span-3">
+                        <div className="col-span-1 sm:col-span-1">
                             <label htmlFor="startedAt" className="block text-xs font-medium text-gray-700">
                                 Status
                             </label>
@@ -344,6 +265,25 @@ export default function FormProduct({ setOpen, setAlert, id }) {
                                 </Switch>
                             </div>
                         </div>
+
+
+
+                        <div className="col-span-6 sm:col-span-8">
+                            <label htmlFor="description" className="block text-xs font-medium text-gray-700">
+                                Descripción
+                            </label>
+                            <textarea
+                                defaultValue={promo?.description}
+                                name="description"
+                                id="description"
+                                required="required"
+                                className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
+                                rows="3"
+                            ></textarea>
+                        </div>
+
+
+
                     </div>
                 </div>
 

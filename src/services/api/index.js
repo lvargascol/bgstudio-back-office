@@ -5,6 +5,8 @@ const endPoints = {
   auth: {
     login: `${API}/api/${VERSION}/auth/login`,
     profile: `${API}/api/${VERSION}/auth/profile`,
+    recovery: `${API}/api/${VERSION}/auth/recovery`,
+    changePassword: `${API}/api/${VERSION}/auth/change-password`,
   },
   categories: {
     getAllCategory: `${API}/api/${VERSION}/categories`,

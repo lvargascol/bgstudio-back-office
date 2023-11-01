@@ -5,7 +5,7 @@ import { Disclosure } from '@headlessui/react'
 import { Listbox } from '@headlessui/react'
 import axios from 'axios';
 import useFetch from '@hooks/useFetch';
-import { updateSpecialist, deleteSpecialist, addService, addServiceByCategory, removeService } from '@services/api/specialists'
+import { addService, addServiceByCategory, removeService } from '@services/api/specialists'
 import endPoints from "@services/api";
 
 const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -15,21 +15,15 @@ export default function SpecialistDetails({ setOpen, alert, setAlert, id }) {
   const router = useRouter();
 
   const [specialist, setSpecialist] = useState([]);
-  const [services, setServices] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [enabled, setEnabled] = useState(true)
-  const [confirmRemove, setConfirmRemove] = useState(false)
-  const [serviceId, setServiceId] = useState([0]);
   const [selectedService, setSelectedService] = useState(false)
 
 
-  const deleteMessage = `¿Está seguro que desea eliminar "${specialist?.firstName} ${specialist?.lastName}" de los servicios ofrecidos?`;
 
   useEffect(() => {
     async function loadSpecialist() {
       const response = await axios.get(endPoints.specialists.getOneSpecialist(id));
       setSpecialist(response.data);
-      // setEnabled(response.data.active);
     }
     try {
       loadSpecialist();
@@ -37,104 +31,8 @@ export default function SpecialistDetails({ setOpen, alert, setAlert, id }) {
       console.log(error)
     }
 
-    async function loadServices() {
-      const response = await axios.get(endPoints.services.getAllService);
-      setServices(response.data);
-    }
-    try {
-      loadServices();
-    } catch (error) {
-      console.log(error)
-    }
-
-    async function loadCategories() {
-      const response = await axios.get(endPoints.categories.getAllCategory);
-      setCategories(response.data);
-    }
-    try {
-      loadCategories();
-    } catch (error) {
-      console.log(error)
-    }
-
   }, [enabled])
 
-  const handleAddService = () => {
-
-    const data = selectedService.categoryId ? {
-      specialistId: id,
-      serviceId: selectedService.id,
-    } : {
-      specialistId: id,
-      categoryId: selectedService.id,
-    };
-
-    if (selectedService.categoryId) {
-      addService(data)
-        .then(() => {
-          setAlert({
-            active: true,
-            message: `Servicio ${data.serviceId} agregado correctamente`,
-            type: 'success',
-            autoClose: false,
-          });
-          setEnabled(!enabled);
-        })
-        .catch((err) => {
-          setAlert({
-            active: true,
-            message: err.response.data.message,
-            type: 'error',
-            autoClose: false,
-          });
-        });
-    } else {
-      addServiceByCategory(data)
-      .then(() => {
-        setAlert({
-          active: true,
-          message: `Categoría ${data.categoryId} agregada correctamente`,
-          type: 'success',
-          autoClose: false,
-        });
-        setEnabled(!enabled);
-      })
-      .catch((err) => {
-        setAlert({
-          active: true,
-          message: err.response.data.message,
-          type: 'error',
-          autoClose: false,
-        });
-      });
-    }
-
-    console.log(data);
-
-  };
-
-  const handleRemove = (data) => {
-    console.log(data);
-
-    removeService(data.id)
-      .then(() => {
-        setAlert({
-          active: true,
-          message: `Servicio ${data.serviceId} removido correctamente`,
-          type: 'success',
-          autoClose: false,
-        });
-        setEnabled(!enabled);
-      })
-      .catch((err) => {
-        setAlert({
-          active: true,
-          message: err.response.data.message,
-          type: 'error',
-          autoClose: false,
-        });
-      });
-  };
   
   return (
     <div className='w-full'>
@@ -200,7 +98,7 @@ export default function SpecialistDetails({ setOpen, alert, setAlert, id }) {
             {specialist.services && (
               <div className="col-span-6 sm:col-span-3">
                 <p className="text-sm font-semibold leading-5 text-gray-900 py-0.5">Servicios Ofrecidos</p>
-                <ul>
+                {/* <ul>
                   {specialist.services.map((service) => (
 
                     <li key={`service-${service.id}`} className="flex flex-raw gap-x-2 items-center ">
@@ -222,7 +120,6 @@ export default function SpecialistDetails({ setOpen, alert, setAlert, id }) {
                                         className=''
                                         type="button"
                                       >
-                                        {/* Trash Can */}
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 py-0.5 text-gray-500">
                                           <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                         </svg>
@@ -231,7 +128,7 @@ export default function SpecialistDetails({ setOpen, alert, setAlert, id }) {
                                       {open && (<button
                                         type="button"
                                       >
-                                        {/* Equis */}
+
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 py-0.5 text-gray-500">
                                           <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
@@ -244,7 +141,6 @@ export default function SpecialistDetails({ setOpen, alert, setAlert, id }) {
                                           type="button"
                                           onClick={() => handleRemove(service.SpecialistService)}
                                         >
-                                          {/* Confirm */}
                                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 py-0.5 text-gray-500">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                           </svg>
@@ -307,7 +203,18 @@ export default function SpecialistDetails({ setOpen, alert, setAlert, id }) {
 
 
                   </li>
-                </ul>
+                </ul> */}
+
+                <div className='col-span-2'>
+                  {specialist?.services?.map((service) => (
+                    <div className='flex flex-raw items-center gap-x-2 '>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 py-0.5 text-gray-500">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                      </svg>
+                      <p className="text-sm leading-5 text-gray-900 py-0 pl-0"> {service.name}</p>
+                    </div>
+                  ))}
+                </div>
 
               </div>)}
           </div>
