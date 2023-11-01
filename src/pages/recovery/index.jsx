@@ -1,6 +1,5 @@
-import RecoveryPage from "@components/Recovery";
+import RecoveryPage from '@components/Recovery';
 
 export default function Recovery() {
   return <RecoveryPage />;
-
 }

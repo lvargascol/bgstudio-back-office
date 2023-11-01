@@ -27,13 +27,13 @@ function useProvideAuth() {
       }
     } catch (error) {
       setUser(null);
-    };
-  }
+    }
+  };
 
   const login = async (email, password) => {
     const config = {
       headers: {
-        accept: "*/*",
+        accept: '*/*',
         'Content-Type': 'application/json',
       },
     };
@@ -49,8 +49,8 @@ function useProvideAuth() {
       const { data: user } = await axios.get(endPoints.auth.profile);
       setUser(user);
       // await fetchUser();
-    };
-  }
+    }
+  };
 
   const logout = () => {
     Cookie.remove('token');
@@ -62,7 +62,7 @@ function useProvideAuth() {
   const recoverPassword = async (email) => {
     const config = {
       headers: {
-        accept: "*/*",
+        accept: '*/*',
         'Content-Type': 'application/json',
       },
     };
@@ -72,26 +72,26 @@ function useProvideAuth() {
     } catch (error) {
       return error.response.status;
     }
-  }
+  };
 
   const changePassword = async (token, password) => {
     const config = {
       headers: {
-        accept: "*/*",
+        accept: '*/*',
         'Content-Type': 'application/json',
       },
     };
     const data = {
       token: token,
       newPassword: password,
-    };    
+    };
     try {
-      const response = await axios.post(endPoints.auth.changePassword, data , config);
+      const response = await axios.post(endPoints.auth.changePassword, data, config);
       return response.status;
     } catch (error) {
       return error.response.status;
     }
-  }
+  };
 
   return {
     user,
@@ -100,6 +100,5 @@ function useProvideAuth() {
     logout,
     recoverPassword,
     changePassword,
-  }
+  };
 }
-

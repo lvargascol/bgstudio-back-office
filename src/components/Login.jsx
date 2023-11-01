@@ -1,46 +1,34 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAuth } from '@hooks/useAuth';
-
-
 export default function LoginPage() {
-
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const auth = useAuth();
   const router = useRouter();
-
   const [unauthorized, setUnauthorized] = useState(false);
-
   const submitHandler = (submit) => {
     submit.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-
-    auth.login(email, password)
-    .then(() => {
-      setUnauthorized(false);
-      router.push('/team')       
-    }).catch((err) => {
-      err.response.status === 401 ? setUnauthorized(true) : setUnauthorized(false);
-    });
-  }
-
+    auth
+      .login(email, password)
+      .then(() => {
+        setUnauthorized(false);
+        router.push('/team');
+      })
+      .catch((err) => {
+        err.response.status === 401 ? setUnauthorized(true) : setUnauthorized(false);
+      });
+  };
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
+          <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
         </div>
-
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={submitHandler}>
             <div>
@@ -59,7 +47,6 @@ export default function LoginPage() {
                 />
               </div>
             </div>
-
             <div>
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
@@ -83,15 +70,11 @@ export default function LoginPage() {
                 />
               </div>
             </div>
-
             {unauthorized && (
               <div className="flex w-full justify-center rounded-md bg-red-200 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm">
-                <p className="m-1 text-center text-sm text-red-500">
-                  Incorrect email address or password.
-                </p>
+                <p className="m-1 text-center text-sm text-red-500">Incorrect email address or password.</p>
               </div>
             )}
-
             <div>
               <button
                 type="submit"
@@ -101,9 +84,8 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
-
         </div>
       </div>
     </>
-  )
+  );
 }

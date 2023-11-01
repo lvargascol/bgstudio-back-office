@@ -1,10 +1,10 @@
-import axios from "axios";
-import endPoints from "@services/api";
+import axios from 'axios';
+import endPoints from '@services/api';
 
 const createService = async (body) => {
   const config = {
     headers: {
-      accept: "*/*",
+      accept: '*/*',
       'Content-Type': 'application/json',
     },
   };

@@ -1,10 +1,10 @@
-import axios from "axios";
-import endPoints from "@services/api";
+import axios from 'axios';
+import endPoints from '@services/api';
 
 const createPromo = async (body) => {
   const config = {
     headers: {
-      accept: "*/*",
+      accept: '*/*',
       'Content-Type': 'application/json',
     },
   };
@@ -15,7 +15,7 @@ const createPromo = async (body) => {
 const addService = async (body) => {
   const config = {
     headers: {
-      accept: "*/*",
+      accept: '*/*',
       'Content-Type': 'application/json',
     },
   };

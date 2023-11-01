@@ -1,46 +1,29 @@
 import { useState, useRef } from 'react';
 import useFetch from '@hooks/useFetch';
-import { useRouter } from 'next/router';
-import { createSpecialist, addService } from '@services/api/specialists'
+import { createSpecialist, addService } from '@services/api/specialists';
 import endPoints from '@services/api';
-
 export default function FormProduct({ setOpen, setAlert }) {
   const formRef = useRef(null);
-  const router = useRouter();
-
   const categories = useFetch(endPoints.categories.getAllCategory);
-  const services = useFetch(endPoints.services.getAllService);
-
   const [selected, setSelected] = useState([]);
-
-
   const handleSelect = () => {
     const selectedId = parseInt(new FormData(formRef.current).get('category'));
-    const found = selected.find((item) => (item.id === selectedId)
-    );
+    const found = selected.find((item) => item.id === selectedId);
     if (!found) {
-      categories.map((category) => (category.id === selectedId) ? setSelected([...selected, category]) : selectedId
-      );
+      categories.map((category) => (category.id === selectedId ? setSelected([...selected, category]) : selectedId));
     }
-
     selected.forEach((category) => {
       category.services.forEach((service) => {
         console.log(service);
       });
     });
-
   };
-
   const handleRemove = (category) => {
-    setSelected(selected.filter((item) => (item.id != category.id)));
+    setSelected(selected.filter((item) => item.id != category.id));
   };
-
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(formRef.current);
-
     const data = {
       firstName: formData.get('firstName'),
       lastName: formData.get('lastName'),
@@ -52,9 +35,8 @@ export default function FormProduct({ setOpen, setAlert }) {
         email: formData.get('email'),
         password: 'password',
         role: 'specialist',
-      }
+      },
     };
-
     createSpecialist(data)
       .then((response) => {
         setAlert({
@@ -72,9 +54,7 @@ export default function FormProduct({ setOpen, setAlert }) {
             console.log(toAddService);
             addService(toAddService);
           });
-
         });
-
         setOpen(false);
       })
       .catch((err) => {
@@ -86,14 +66,12 @@ export default function FormProduct({ setOpen, setAlert }) {
         });
       });
   };
-
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
       <div className="overflow-hidden">
-      <p className="text-sm pb-2 font-bold text-gray-900">Añadir miembro</p>
+        <p className="text-sm pb-2 font-bold text-gray-900">Añadir miembro</p>
         <div className="px-4 py-1 bg-white sm:p-6 sm:pt-1">
           <div className="grid grid-cols-6 sm:grid-cols-6 gap-2">
-
             <div className="col-span-6 sm:col-span-2">
               <label htmlFor="firstName" className="block text-xs font-medium text-gray-700">
                 Nombres
@@ -109,7 +87,6 @@ export default function FormProduct({ setOpen, setAlert }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-
             <div className="col-span-6 sm:col-span-2">
               <label htmlFor="lastName" className="block text-xs font-medium text-gray-700">
                 Apellidos
@@ -125,7 +102,6 @@ export default function FormProduct({ setOpen, setAlert }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-
             <div className="col-span-6 sm:col-span-2">
               <label htmlFor="birthday" className="block text-xs font-medium text-gray-700">
                 Fecha de Nacimiento
@@ -139,13 +115,12 @@ export default function FormProduct({ setOpen, setAlert }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-
             <div className="col-span-6 sm:col-span-3">
               <label htmlFor="phone" className="block text-xs font-medium text-gray-700">
                 Teléfono
               </label>
-              <div className='inline-flex items-center justify-center gap-x-2 mt-1'>
-                <p className='text-xs font-medium text-gray-700'>+56</p>
+              <div className="inline-flex items-center justify-center gap-x-2 mt-1">
+                <p className="text-xs font-medium text-gray-700">+56</p>
                 <input
                   // defaultValue={product?.title}
                   type="tel"
@@ -155,9 +130,9 @@ export default function FormProduct({ setOpen, setAlert }) {
                   required="required"
                   pattern="[0-9]{9}"
                   className="text-xs mt-0 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
-                /></div>
+                />
+              </div>
             </div>
-
             <div className="col-span-6 sm:col-span-3">
               <label htmlFor="email" className="block text-xs font-medium text-gray-700">
                 Correo Electrónico
@@ -173,7 +148,6 @@ export default function FormProduct({ setOpen, setAlert }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-
             <div className="col-span-6 sm:col-span-4">
               <label htmlFor="position" className="block text-xs font-medium text-gray-700">
                 Cargo / Ocupación
@@ -189,7 +163,6 @@ export default function FormProduct({ setOpen, setAlert }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-
             <div className="col-span-6 sm:col-span-2">
               <label htmlFor="startedAt" className="block text-xs font-medium text-gray-700">
                 Inicio de Actividades
@@ -203,9 +176,6 @@ export default function FormProduct({ setOpen, setAlert }) {
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               />
             </div>
-
-
-
             <div className="col-span-6 sm:col-span-6">
               <label htmlFor="category" className="block text-xs font-medium text-gray-700">
                 Categoría de servicios
@@ -216,7 +186,9 @@ export default function FormProduct({ setOpen, setAlert }) {
                 onChange={handleSelect}
                 className="text-xs mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md"
               >
-                <option value="" disabled selected className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap">Selecione los servicios</option>
+                <option value="" disabled selected className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap">
+                  Selecione los servicios
+                </option>
                 {/* {categories?.map((category) => (
                   <optgroup
                     key={category.id}
@@ -233,47 +205,28 @@ export default function FormProduct({ setOpen, setAlert }) {
                         className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"
                       >
                         {service.name}
-
                       </option>))}
-
                   </optgroup>
                   ))} */}
-
-
                 {categories?.map((category) => (
-                  <option
-                    key={category.id}
-                    value={category.id}
-                    disabled={category.unavailable}
-                    label={category.name}
-                    className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"
-                  >
-                  </option>
+                  <option key={category.id} value={category.id} disabled={category.unavailable} label={category.name} className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"></option>
                 ))}
-
-
-
               </select>
-
-              {selected.length != 0 && (<ul className='inline-flex items-center justify-center gap-x-2 gap-y-1 mt-1 flex-wrap'>
-                {selected.map((item, index) => (
-                  <li
-                    key={item.id}
-                    className='inline-flex justify-center py-1 px-2 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-gray-500'
-                  ><p className="text-xs mt-0 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md">{item.name}</p><button
-                    type="button"
-                    onClick={() => handleRemove(item)}
-                  >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 pl-1 text-white">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button></li>))}
-              </ul>)}
+              {selected.length != 0 && (
+                <ul className="inline-flex items-center justify-center gap-x-2 gap-y-1 mt-1 flex-wrap">
+                  {selected.map((item) => (
+                    <li key={item.id} className="inline-flex justify-center py-1 px-2 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-gray-500">
+                      <p className="text-xs mt-0 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-xs border-gray-300 rounded-md">{item.name}</p>
+                      <button type="button" onClick={() => handleRemove(item)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 pl-1 text-white">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-
-
-            
-
           </div>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">

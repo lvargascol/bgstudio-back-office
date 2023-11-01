@@ -4,55 +4,44 @@ import Link from 'next/link';
 import { useAuth } from '@hooks/useAuth';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-
-
-
-
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
-
-export default function Example() {  
+export default function Example() {
   const auth = useAuth();
   const router = useRouter();
-  
   auth.fetchUser();
-
-  const navigation = auth.user ? 
-  [
-    // { name: 'Bookings', href: '/bookings', current: (router.asPath === '/bookings') ? true : false },
-    { name: 'Team', href: '/team', current: (router.asPath === '/team') ? true : false },
-    { name: 'Services', href: '/services', current: (router.asPath === '/services') ? true : false },
-    { name: 'Promos', href: '/promos', current: (router.asPath === '/promos') ? true : false },
-    { name: 'Categories', href: '/categories', current: (router.asPath === '/categories') ? true : false },
-    // { name: 'Customers', href: '/customers', current: (router.asPath === '/customers') ? true : false },
-  ]
-  :
-  []
-
-  const userNavigation = auth.user ?
-  [
-    { name: 'Your Profile', callback: () => router.push('/team') },
-    { name: 'Sign out', callback: () => auth.logout() },
-  ]
-  :
-  [
-    { name: 'Sign in', callback: () => router.push('/login') },
-    // { name: 'Sign out', callback: () => auth.logout() },
-  ]
-
-  const user = (auth.role === 'specialist') ?
-  {
-    name: auth?.user?.specialist.name,
-    email: auth?.user?.email,
-    imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.specialist.name}`,
-  } :
-  {
-    name: auth?.user?.role,
-    email: auth?.user?.email,
-    imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.role}`,
-  }
-
+  const navigation = auth.user
+    ? [
+        // { name: 'Bookings', href: '/bookings', current: router.asPath === '/bookings' ? true : false },
+        { name: 'Team', href: '/team', current: router.asPath === '/team' ? true : false },
+        { name: 'Services', href: '/services', current: router.asPath === '/services' ? true : false },
+        { name: 'Promos', href: '/promos', current: router.asPath === '/promos' ? true : false },
+        { name: 'Categories', href: '/categories', current: router.asPath === '/categories' ? true : false },
+        // { name: 'Customers', href: '/customers', current: router.asPath === '/customers' ? true : false },
+      ]
+    : [];
+  const userNavigation = auth.user
+    ? [
+        { name: 'Your Profile', callback: () => router.push('/team') },
+        { name: 'Sign out', callback: () => auth.logout() },
+      ]
+    : [
+        { name: 'Sign in', callback: () => router.push('/login') },
+        // { name: 'Sign out', callback: () => auth.logout() },
+      ];
+  const user =
+    auth.role === 'specialist'
+      ? {
+          name: auth?.user?.specialist.name,
+          email: auth?.user?.email,
+          imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.specialist.name}`,
+        }
+      : {
+          name: auth?.user?.role,
+          email: auth?.user?.email,
+          imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.role}`,
+        };
   return (
     <>
       <div className="min-h-full">
@@ -63,11 +52,7 @@ export default function Example() {
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <img
-                        className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                      />
+                      <img className="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -75,12 +60,7 @@ export default function Example() {
                           <Link
                             key={item.name}
                             href={item.href}
-                            className={classNames(
-                              item.current
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                              'rounded-md px-3 py-2 text-sm font-medium'
-                            )}
+                            className={classNames(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium')}
                             aria-current={item.current ? 'page' : undefined}
                           >
                             {item.name}
@@ -98,7 +78,6 @@ export default function Example() {
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
-
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
@@ -120,13 +99,7 @@ export default function Example() {
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
-                                  <button
-                                    onClick={() => item.callback()}
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700'
-                                    )}
-                                  >
+                                  <button onClick={() => item.callback()} className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>
                                     {item.name}
                                   </button>
                                 )}
@@ -141,16 +114,11 @@ export default function Example() {
                     {/* Mobile menu button */}
                     <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open main menu</span>
-                      {open ? (
-                        <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                      ) : (
-                        <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                      )}
+                      {open ? <XMarkIcon className="block h-6 w-6" aria-hidden="true" /> : <Bars3Icon className="block h-6 w-6" aria-hidden="true" />}
                     </Disclosure.Button>
                   </div>
                 </div>
               </div>
-
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                   {navigation.map((item) => (
@@ -158,13 +126,9 @@ export default function Example() {
                       key={item.name}
                       as="Link"
                       href={item.href}
-                      className={classNames(
-                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block rounded-md px-3 py-2 text-base font-medium'
-                      )}
+                      className={classNames(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium')}
                       aria-current={item.current ? 'page' : undefined}
                     >
-                      
                       {item.name}
                     </Disclosure.Button>
                   ))}
@@ -188,12 +152,7 @@ export default function Example() {
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     {userNavigation.map((item) => (
-                      <Disclosure.Button
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                      >
+                      <Disclosure.Button key={item.name} as="a" href={item.href} className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">
                         {item.name}
                       </Disclosure.Button>
                     ))}
@@ -203,8 +162,7 @@ export default function Example() {
             </>
           )}
         </Disclosure>
-
       </div>
     </>
-  )
+  );
 }

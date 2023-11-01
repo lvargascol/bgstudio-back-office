@@ -48,6 +48,6 @@ const endPoints = {
     updateUser: (id) => `${API}/api/${VERSION}/users/${id}`,
     deleteUser: (id) => `${API}/api/${VERSION}/users/${id}`,
   },
-}
+};
 
 export default endPoints;
