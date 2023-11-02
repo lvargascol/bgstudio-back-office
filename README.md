@@ -1,38 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# BGStudio-Back-Office
+
+BGStudio-Back-Office is a web-based administration portal created with React, Next.js, and Tailwind CSS. This application is designed to complement your BGStudio-API, providing an intuitive and user-friendly interface for managing your beauty salon's operations and data. Although it's currently under development, this README will help you get started.
+
+## Table of Contents
+
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+BGStudio-Back-Office offers a range of features to streamline the administrative tasks related to your beauty salon:
+
+- **User-Friendly Dashboard**: An easy-to-navigate dashboard provides an overview of salon operations and key metrics.
+
+- **Manage Services and Products**: Effortlessly add, update, or remove services and products offered by your salon.
+
+- **Promotional Offers**: Create and manage promotional offers to attract and retain customers.
+
+- **Specialists and Customers**: Keep track of specialists' schedules and customer profiles, enhancing personalization.
+
+- **Booking Management**: View and manage customer bookings, making salon scheduling a breeze.
+
+- **Order Handling**: Efficiently handle orders for both products and services within the back office.
+
+- **Inventory Management**: Track product inventory and stocks, ensuring you never run out of essentials.
+
+- **User Authentication**: Secure user authentication to ensure authorized access and data protection.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Before setting up BGStudio-Back-Office, make sure you have the following prerequisites in place:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js and npm installed on your system.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- Access to your BGStudio-API for integration and data management.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### Installation
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+1. Clone the repository to your local machine:
+`git clone https://github.com/lvargascol/bgstudio-back-office.git`
+1. Change the working directory:
+`cd bgstudio-back-office`
+1. Install the required dependencies:
+`npm install`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Usage
+BGStudio-Back-Office is a React-based application built with Next.js and styled with Tailwind CSS, making it easy to customize and extend according to your salon's specific needs. To get started, follow these steps:
 
-## Learn More
+1. Configure the application to connect to your BGStudio-API by updating the necessary API endpoints in your configuration files.
+1. Run the development server: `npm run dev`
+1. Access the application in your web browser by navigating to http://localhost:3000 or the configured port.
+1. Use the user-friendly dashboard and navigation to manage services, products, specialists, customers, bookings, orders, and more.
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
+Contributions to BGStudio-Back-Office are highly encouraged and welcomed! If you'd like to contribute to this project, please follow these steps:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Fork the repository.
+1. Create your feature branch: `git checkout -b feature/your-feature)`.
+1. Commit your changes: `git commit -m '[ADD] Some feature'`.
+1. Push to the branch: `git push origin feature/your-feature`.
+1. Open a pull request, and our team will review your contribution.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## License
+This project is licensed under the MIT License.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+BGStudio-Back-Office is designed to simplify the management of your beauty salon's operations. If you have any questions, issues, or suggestions, please open a GitHub issue or contact me. I hope BGStudio-Back-Office enhances your salon's efficiency and helps you provide top-notch services to your clients. Happy managing!
