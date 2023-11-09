@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '@hooks/useAuth';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import LogoSVG from '@common/Logo';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
@@ -13,46 +14,45 @@ export default function Example() {
   auth.fetchUser();
   const navigation = auth.user
     ? [
-        // { name: 'Bookings', href: '/bookings', current: router.asPath === '/bookings' ? true : false },
-        { name: 'Team', href: '/team', current: router.asPath === '/team' ? true : false },
-        { name: 'Services', href: '/services', current: router.asPath === '/services' ? true : false },
-        { name: 'Promos', href: '/promos', current: router.asPath === '/promos' ? true : false },
-        { name: 'Categories', href: '/categories', current: router.asPath === '/categories' ? true : false },
-        // { name: 'Customers', href: '/customers', current: router.asPath === '/customers' ? true : false },
-      ]
+      // { name: 'Bookings', href: '/bookings', current: router.asPath === '/bookings' ? true : false },
+      { name: 'Team', href: '/team', current: router.asPath === '/team' ? true : false },
+      { name: 'Services', href: '/services', current: router.asPath === '/services' ? true : false },
+      { name: 'Promos', href: '/promos', current: router.asPath === '/promos' ? true : false },
+      { name: 'Categories', href: '/categories', current: router.asPath === '/categories' ? true : false },
+      // { name: 'Customers', href: '/customers', current: router.asPath === '/customers' ? true : false },
+    ]
     : [];
   const userNavigation = auth.user
     ? [
-        { name: 'Your Profile', callback: () => router.push('/team') },
-        { name: 'Sign out', callback: () => auth.logout() },
-      ]
+      { name: 'Your Profile', callback: () => router.push('/team') },
+      { name: 'Sign out', callback: () => auth.logout() },
+    ]
     : [
-        { name: 'Sign in', callback: () => router.push('/login') },
-        // { name: 'Sign out', callback: () => auth.logout() },
-      ];
+      { name: 'Sign in', callback: () => router.push('/login') },
+    ];
   const user =
     auth.role === 'specialist'
       ? {
-          name: auth?.user?.specialist.name,
-          email: auth?.user?.email,
-          imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.specialist.name}`,
-        }
+        name: auth?.user?.specialist.name,
+        email: auth?.user?.email,
+        imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.specialist.name}`,
+      }
       : {
-          name: auth?.user?.role,
-          email: auth?.user?.email,
-          imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.role}`,
-        };
+        name: auth?.user?.role,
+        email: auth?.user?.email,
+        imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.role}`,
+      };
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-gray-800">
+        <Disclosure as="nav" className="bg-bgPink-800">
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <img className="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
+                        <LogoSVG className="h-16 w-auto " color='#f9fafb' short={true} />
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -60,7 +60,7 @@ export default function Example() {
                           <Link
                             key={item.name}
                             href={item.href}
-                            className={classNames(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium')}
+                            className={classNames(item.current ? 'text-gray-50' : 'text-bgBrown-200 hover:text-bgPink-200', 'rounded-md px-3 py-2 text-sm font-medium')}
                             aria-current={item.current ? 'page' : undefined}
                           >
                             {item.name}
@@ -73,7 +73,7 @@ export default function Example() {
                     <div className="ml-4 flex items-center md:ml-6">
                       <button
                         type="button"
-                        className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        className="rounded-full p-1 text-gray-50 hover:text-bgPink-200 "
                       >
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -81,9 +81,9 @@ export default function Example() {
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
-                          <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <Menu.Button className="flex max-w-xs items-center rounded-full text-sm">
                             <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src={user?.imageUrl} alt="" />
+                            <img className="h-8 w-8 rounded-full" src={user?.imageUrl} alt="" />  
                           </Menu.Button>
                         </div>
                         <Transition
@@ -112,7 +112,7 @@ export default function Example() {
                   </div>
                   <div className="-mr-2 flex md:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-bgPink-800 p-2 text-gray-100 hover:text-bgPink-200">
                       <span className="sr-only">Open main menu</span>
                       {open ? <XMarkIcon className="block h-6 w-6" aria-hidden="true" /> : <Bars3Icon className="block h-6 w-6" aria-hidden="true" />}
                     </Disclosure.Button>
@@ -126,25 +126,25 @@ export default function Example() {
                       key={item.name}
                       as="Link"
                       href={item.href}
-                      className={classNames(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium')}
+                      className={classNames(item.current ? 'text-gray-50' : 'text-bgBrown-200 hover:text-bgPink-200', 'block rounded-md px-3 py-2 text-base font-medium')}
                       aria-current={item.current ? 'page' : undefined}
                     >
                       {item.name}
                     </Disclosure.Button>
                   ))}
                 </div>
-                <div className="border-t border-gray-700 pb-3 pt-4">
+                <div className="border-t border-bgBrown-600 pb-3 pt-4">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
                       <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                      <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                      <div className="text-sm font-medium leading-none text-gray-100">{user.email}</div>
                     </div>
                     <button
                       type="button"
-                      className="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                      className="ml-auto flex-shrink-0 rounded-full p-1 text-gray-100 hover:text-bgPink-200"
                     >
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -152,7 +152,7 @@ export default function Example() {
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     {userNavigation.map((item) => (
-                      <Disclosure.Button key={item.name} as="a" href={item.href} className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">
+                      <Disclosure.Button key={item.name} as="Link" href={item.href} className="block rounded-md px-3 py-2 text-base font-medium text-gray-100 hover:text-bgPink-200">
                         {item.name}
                       </Disclosure.Button>
                     ))}

@@ -11,7 +11,19 @@ module.exports = {
   ],
   theme: {
     colors: {
-      ...colors
+      ...colors,
+      bgPink: {
+        200: '#eed2d1',
+        300: '#e1b5b6',
+        400: '#dd9fa0',
+        500: '#d79191',
+        600: '#db807f',
+        800: '#8a4e4e',
+      },
+      bgBrown: {
+        200: '#e0baa5',
+        600: '#bc8c77',
+      }
     },
   },
   plugins: [
