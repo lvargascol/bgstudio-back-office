@@ -26,7 +26,7 @@ export default function Home() {
           <div className="text-center">
             <LogoSVG className="mx-auto h-50 w-auto" color="#db807f" />
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl py-8">BGStudio Back Office</h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">Manage your salon&aposs operations.</p>
+            <p className="mt-6 text-lg leading-8 text-gray-600">Manage your salon&apos;s operations.</p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
                 href="/login"
