@@ -14,34 +14,32 @@ export default function Example() {
   auth.fetchUser();
   const navigation = auth.user
     ? [
-      // { name: 'Bookings', href: '/bookings', current: router.asPath === '/bookings' ? true : false },
-      { name: 'Team', href: '/team', current: router.asPath === '/team' ? true : false },
-      { name: 'Services', href: '/services', current: router.asPath === '/services' ? true : false },
-      { name: 'Promos', href: '/promos', current: router.asPath === '/promos' ? true : false },
-      { name: 'Categories', href: '/categories', current: router.asPath === '/categories' ? true : false },
-      // { name: 'Customers', href: '/customers', current: router.asPath === '/customers' ? true : false },
-    ]
+        // { name: 'Bookings', href: '/bookings', current: router.asPath === '/bookings' ? true : false },
+        { name: 'Team', href: '/team', current: router.asPath === '/team' ? true : false },
+        { name: 'Services', href: '/services', current: router.asPath === '/services' ? true : false },
+        { name: 'Promos', href: '/promos', current: router.asPath === '/promos' ? true : false },
+        { name: 'Categories', href: '/categories', current: router.asPath === '/categories' ? true : false },
+        // { name: 'Customers', href: '/customers', current: router.asPath === '/customers' ? true : false },
+      ]
     : [];
   const userNavigation = auth.user
     ? [
-      { name: 'Your Profile', callback: () => router.push('/team') },
-      { name: 'Sign out', callback: () => auth.logout() },
-    ]
-    : [
-      { name: 'Sign in', callback: () => router.push('/login') },
-    ];
+        { name: 'Your Profile', callback: () => router.push('/team') },
+        { name: 'Sign out', callback: () => auth.logout() },
+      ]
+    : [{ name: 'Sign in', callback: () => router.push('/login') }];
   const user =
     auth.role === 'specialist'
       ? {
-        name: auth?.user?.specialist.name,
-        email: auth?.user?.email,
-        imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.specialist.name}`,
-      }
+          name: auth?.user?.specialist.name,
+          email: auth?.user?.email,
+          imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.specialist.name}`,
+        }
       : {
-        name: auth?.user?.role,
-        email: auth?.user?.email,
-        imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.role}`,
-      };
+          name: auth?.user?.role,
+          email: auth?.user?.email,
+          imageUrl: `https://ui-avatars.com/api/?name=${auth?.user?.role}`,
+        };
   return (
     <>
       <div className="min-h-full">
@@ -52,7 +50,7 @@ export default function Example() {
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                        <LogoSVG className="h-16 w-auto " color='#f9fafb' short={true} />
+                      <LogoSVG className="h-16 w-auto " color="#f9fafb" short={true} />
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -71,10 +69,7 @@ export default function Example() {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
-                      <button
-                        type="button"
-                        className="rounded-full p-1 text-gray-50 hover:text-bgPink-200 "
-                      >
+                      <button type="button" className="rounded-full p-1 text-gray-50 hover:text-bgPink-200 ">
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
@@ -83,7 +78,7 @@ export default function Example() {
                         <div>
                           <Menu.Button className="flex max-w-xs items-center rounded-full text-sm">
                             <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src={user?.imageUrl} alt="" />  
+                            <img className="h-8 w-8 rounded-full" src={user?.imageUrl} alt="" />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -142,10 +137,7 @@ export default function Example() {
                       <div className="text-base font-medium leading-none text-white">{user.name}</div>
                       <div className="text-sm font-medium leading-none text-gray-100">{user.email}</div>
                     </div>
-                    <button
-                      type="button"
-                      className="ml-auto flex-shrink-0 rounded-full p-1 text-gray-100 hover:text-bgPink-200"
-                    >
+                    <button type="button" className="ml-auto flex-shrink-0 rounded-full p-1 text-gray-100 hover:text-bgPink-200">
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
