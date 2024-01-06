@@ -14,7 +14,7 @@ export default function Example() {
   auth.fetchUser();
   const navigation = auth.user
     ? [
-        // { name: 'Bookings', href: '/bookings', current: router.asPath === '/bookings' ? true : false },
+        { name: 'Bookings', href: '/bookings', current: router.asPath === '/bookings' ? true : false },
         { name: 'Team', href: '/team', current: router.asPath === '/team' ? true : false },
         { name: 'Services', href: '/services', current: router.asPath === '/services' ? true : false },
         { name: 'Promos', href: '/promos', current: router.asPath === '/promos' ? true : false },
@@ -119,12 +119,14 @@ export default function Example() {
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
-                      as="Link"
-                      href={item.href}
                       className={classNames(item.current ? 'text-gray-50' : 'text-bgBrown-200 hover:text-bgPink-200', 'block rounded-md px-3 py-2 text-base font-medium')}
                       aria-current={item.current ? 'page' : undefined}
                     >
-                      {item.name}
+                      <Link
+                        href={item.href}
+                      >
+                        {item.name}
+                      </Link>
                     </Disclosure.Button>
                   ))}
                 </div>
