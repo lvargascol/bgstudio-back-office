@@ -1,10 +1,21 @@
 import { useState } from 'react';
 import moment from 'moment';
-import OneDayBookings from '@components/OneDayBookings';
+import DailySales from '@components/DailySales';
+import MonthSales from '@components/MonthSales';
+import YearSales from '@components/YearSales';
 
-export default function Bookings() {
+export default function Sales() {
   const today = moment(Date.now()).format('YYYY-MM-DD');
   const [date, setDate] = useState(today);
+  const [selectedTimeInterval, setSelectedTimeInterval] = useState(0);
+  const timeIntervals = [
+    { name: 'Diario', current: selectedTimeInterval === 0 ? true : false },
+    { name: `Mensual (${moment(date).format('MMM')})`, current: selectedTimeInterval === 1 ? true : false },
+    { name: `Anual (${moment(date).format('YYYY')})`, current: selectedTimeInterval === 2 ? true : false },
+  ];
+  const handleTimeInterval = (index) => {
+    setSelectedTimeInterval(index);
+  };
   return (
     <div>
       <div className="flex items-center justify-center">
@@ -50,7 +61,16 @@ export default function Bookings() {
           </div>
         </div>
       </div>
-      <OneDayBookings date={date} />
+      <div className="bg-gray-200 px-0.5 pt-0.5 grid grid-cols-3 gap-x-0.5 rounded-sm">
+        {timeIntervals.map((timeInterval, index) => (
+          <button key={`button-${index}`} className={`col-span-1 py-1 ${selectedTimeInterval === index ? 'bg-white ' : ''}`} onClick={() => handleTimeInterval(index)}>
+            <span className="text-sm leading-5 text-gray-900 py-0.5">{timeInterval.name}</span>
+          </button>
+        ))}
+      </div>
+      {selectedTimeInterval === 0 && <DailySales date={date} />}
+      {selectedTimeInterval === 1 && <MonthSales date={date} />}
+      {selectedTimeInterval === 2 && <YearSales date={date} />}
     </div>
   );
 }

@@ -19,6 +19,7 @@ export default function Example() {
         { name: 'Services', href: '/services', current: router.asPath === '/services' ? true : false },
         { name: 'Promos', href: '/promos', current: router.asPath === '/promos' ? true : false },
         { name: 'Categories', href: '/categories', current: router.asPath === '/categories' ? true : false },
+        { name: 'Sales', href: '/sales', current: router.asPath === '/sales' ? true : false },
         // { name: 'Customers', href: '/customers', current: router.asPath === '/customers' ? true : false },
       ]
     : [];
@@ -122,11 +123,7 @@ export default function Example() {
                       className={classNames(item.current ? 'text-gray-50' : 'text-bgBrown-200 hover:text-bgPink-200', 'block rounded-md px-3 py-2 text-base font-medium')}
                       aria-current={item.current ? 'page' : undefined}
                     >
-                      <Link
-                        href={item.href}
-                      >
-                        {item.name}
-                      </Link>
+                      <Link href={item.href}>{item.name}</Link>
                     </Disclosure.Button>
                   ))}
                 </div>

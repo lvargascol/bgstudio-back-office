@@ -20,6 +20,10 @@ const endPoints = {
     removeServiceToBooking: (id) => `${API}/api/${VERSION}/bookings/remove-service/${id}`,
     addPromoToBooking: `${API}/api/${VERSION}/bookings/add-promo`,
     removePromoToBooking: (id) => `${API}/api/${VERSION}/bookings/remove-promo/${id}`,
+    getSalesByDate: (date) => `${API}/api/${VERSION}/bookings/sales/${date}`,
+    getSalesByDateAndSpecialist: (date, id) => `${API}/api/${VERSION}/bookings/sales/${date}/${id}`,
+    getTotalSalesOnInterval: (start, end) => `${API}/api/${VERSION}/bookings/sales/total/${start}/${end}`,
+    getTotalSalesOnIntervalBySpecialist: (start, end, id) => `${API}/api/${VERSION}/bookings/sales/total/${start}/${end}/${id}`,
   },
   categories: {
     getAllCategory: `${API}/api/${VERSION}/categories`,
