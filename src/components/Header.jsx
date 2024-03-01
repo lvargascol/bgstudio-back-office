@@ -118,13 +118,14 @@ export default function Example() {
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                   {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      className={classNames(item.current ? 'text-gray-50' : 'text-bgBrown-200 hover:text-bgPink-200', 'block rounded-md px-3 py-2 text-base font-medium')}
-                      aria-current={item.current ? 'page' : undefined}
-                    >
-                      <Link href={item.href}>{item.name}</Link>
-                    </Disclosure.Button>
+                    <Link key={item.name} href={item.href}>
+                      <Disclosure.Button
+                        className={classNames(item.current ? 'text-gray-50' : 'text-bgBrown-200 hover:text-bgPink-200', 'block rounded-md px-3 py-2 text-left font-medium w-full')}
+                        aria-current={item.current ? 'page' : undefined}
+                      >
+                        <p>{item.name}</p>
+                      </Disclosure.Button>
+                    </Link>
                   ))}
                 </div>
                 <div className="border-t border-bgBrown-600 pb-3 pt-4">

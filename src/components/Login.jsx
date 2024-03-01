@@ -16,7 +16,7 @@ export default function LoginPage() {
       .login(email, password)
       .then(() => {
         setUnauthorized(false);
-        router.push('/team');
+        router.push('/bookings');
       })
       .catch((err) => {
         err.response.status === 401 ? setUnauthorized(true) : setUnauthorized(false);

@@ -39,28 +39,14 @@ export default function Categories() {
     <ul className="divide-y divide-gray-200">
       <Alert alert={alert} handleClose={toggleAlert} />
       {categories.map((category) => (
-        <li key={`category-${category.id}`} className="py-2 px-2">
+        <li key={`category-${category.id}`} className="py-1 px-2">
           <div as="div">
             <>
               <div as="div" className="flex justify-between gap-x-6">
                 <div className="flex gap-x-4">
                   <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-5 text-gray-900 py-0.5">{category.name}</p>
+                    <p className="text-xs font-semibold leading-5 text-gray-900 py-0.5">{category.name}</p>
                   </div>
-                  {/* {category.active ? (
-                    <div className="flex items-center gap-x-1.5">
-                      <div className="flex-none rounded-full bg-gray-500/20 p-0.5">
-                        <div className="h-2 w-2 rounded-full bg-emerald-600" />
-                      </div>
-
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-x-1.5">
-                      <div className="flex-none rounded-full bg-gray-500/20 p-0.5">
-                        <div className="h-2 w-2 rounded-full bg-red-700" />
-                      </div>
-                    </div>
-                  )} */}
                 </div>
                 <div className="flex flex-col items-end">
                   <div className="flex flex-raw gap-x-6 px-2">
@@ -89,13 +75,6 @@ export default function Categories() {
                     </div>
                   </div>
                 </div>
-                {/* </div>
-        <div className="flex justify-between">
-        <div className="flex gap-x-4">
-          <div className="min-w-0 flex-auto">
-          <p className="mt-1 truncate text-xs leading-3 text-gray-500">$ {category.price}</p>
-          </div>
-        </div> */}
               </div>
             </>
           </div>
