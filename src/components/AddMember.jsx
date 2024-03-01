@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import useFetch from '@hooks/useFetch';
 import { createSpecialist, addService } from '@services/api/specialists';
 import endPoints from '@services/api';
-export default function FormProduct({ setOpen, setAlert }) {
+export default function AddMember({ setOpen, setAlert }) {
   const formRef = useRef(null);
   const categories = useFetch(endPoints.categories.getAllCategory);
   const [selected, setSelected] = useState([]);
@@ -189,25 +189,6 @@ export default function FormProduct({ setOpen, setAlert }) {
                 <option value="" disabled selected className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap">
                   Selecione los servicios
                 </option>
-                {/* {categories?.map((category) => (
-                  <optgroup
-                    key={category.id}
-                    value={category.id}
-                    disabled={category.unavailable}
-                    label={category.name}
-                    className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"
-                  >
-                    {category?.services.map((service) => (
-                      <option
-                        key={service.id}
-                        value={service.id}
-                        disabled={service.unavailable}
-                        className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"
-                      >
-                        {service.name}
-                      </option>))}
-                  </optgroup>
-                  ))} */}
                 {categories?.map((category) => (
                   <option key={category.id} value={category.id} disabled={category.unavailable} label={category.name} className="text-xs leading-5 text-gray-600 py-0 pl-4 whitespace-nowrap"></option>
                 ))}

@@ -42,7 +42,7 @@ export default function Sales() {
                   name="date"
                   id="date"
                   required="required"
-                  className="relative z-10 inline-flex items-center bg-bgPink-800 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bgPink-800"
+                  className="relative z-10 inline-flex items-center bg-bgPink-800 px-4 py-2 text-xs font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bgPink-800"
                 />
                 <button
                   onClick={() => setDate(moment(date).add(1, 'days').format('YYYY-MM-DD'))}
@@ -64,7 +64,7 @@ export default function Sales() {
       <div className="bg-gray-200 px-0.5 pt-0.5 grid grid-cols-3 gap-x-0.5 rounded-sm">
         {timeIntervals.map((timeInterval, index) => (
           <button key={`button-${index}`} className={`col-span-1 py-1 ${selectedTimeInterval === index ? 'bg-white ' : ''}`} onClick={() => handleTimeInterval(index)}>
-            <span className="text-sm leading-5 text-gray-900 py-0.5">{timeInterval.name}</span>
+            <span className="text-xs leading-5 text-gray-900 py-0.5">{timeInterval.name}</span>
           </button>
         ))}
       </div>

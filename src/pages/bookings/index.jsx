@@ -31,7 +31,7 @@ export default function Bookings() {
                   name="date"
                   id="date"
                   required="required"
-                  className="relative z-10 inline-flex items-center bg-bgPink-800 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bgPink-800"
+                  className="relative z-10 inline-flex items-center bg-bgPink-800 px-4 py-2 text-xs font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bgPink-800"
                 />
                 <button
                   onClick={() => setDate(moment(date).add(1, 'days').format('YYYY-MM-DD'))}
